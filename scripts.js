@@ -1,13 +1,20 @@
 const urlAPI = "http://localhost:3001/facturas";
-const filadummy = document.querySelector(".dummy");
-filadummy.cloneNode(true);
+const filadummy = document.querySelector(".dummy").cloneNode(true);
 
-let facturas;
+const facturas = fetch(urlAPI).then(respuesta => respuesta.json()).then(dato => dato);
+
+async function nuevaFila() {
+  let nuevaFila;
+  const tabla = document.querySelector(".facturas");
+  for (const factura of await facturas) {
+    nuevaFila = filadummy.cloneNode(true);
+    nuevaFila.classList.remove("ocultado", "dummy");
+    tabla.append(nuevaFila);
+  }
+}
 (async () => {
-  const respuesta = await fetch(urlAPI);
-  facturas = await respuesta.json();
+  await nuevaFila();
 }
 )();
 
-filadummy.textContent = ("");
 filadummy.classList.add("ocultado");
