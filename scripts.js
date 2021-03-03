@@ -4,6 +4,5 @@ let facturas;
 (async () => {
   const respuesta = await fetch(urlAPI);
   facturas = await respuesta.json();
-  console.log(facturas);
 }
 )();
