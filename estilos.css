@@ -229,5 +229,5 @@ button[type="submit"] {
   }
 }
 .dummy {
-  display: hidden;
+  display: none;
 }
