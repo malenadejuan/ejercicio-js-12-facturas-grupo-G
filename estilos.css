@@ -228,6 +228,6 @@ button[type="submit"] {
     width: calc(100% - 200px);
   }
 }
-.ocultado {
+.dummy {
   display: hidden;
 }
