@@ -9,6 +9,14 @@ async function nuevaFila() {
   for (const factura of await facturas) {
     if (factura.tipo === "ingreso") {
       nuevaFila = filadummy.cloneNode(true);
+      nuevaFila.querySelector(".numero").textContent = factura.numero;
+      nuevaFila.querySelector(".fecha").textContent = factura.fecha;
+      nuevaFila.querySelector(".concepto").textContent = factura.concepto;
+      nuevaFila.querySelector(".base").textContent = factura.base;
+      nuevaFila.querySelector(".iva").textContent = factura.tipoIva;
+      /* nuevaFila.querySelector(".total").textContent = ; */
+      nuevaFila.querySelector(".estado").textContent = factura.abonada;
+      nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
       nuevaFila.classList.remove("dummy");
       tabla.append(nuevaFila);
     }
@@ -18,5 +26,3 @@ async function nuevaFila() {
   await nuevaFila();
 }
 )();
-
-filadummy.classList.add("ocultado");
