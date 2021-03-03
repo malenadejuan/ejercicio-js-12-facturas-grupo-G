@@ -7,9 +7,11 @@ async function nuevaFila() {
   let nuevaFila;
   const tabla = document.querySelector(".facturas");
   for (const factura of await facturas) {
-    nuevaFila = filadummy.cloneNode(true);
-    nuevaFila.classList.remove("ocultado", "dummy");
-    tabla.append(nuevaFila);
+    if (factura.tipo === "ingreso") {
+      nuevaFila = filadummy.cloneNode(true);
+      nuevaFila.classList.remove("dummy");
+      tabla.append(nuevaFila);
+    }
   }
 }
 (async () => {
