@@ -1,6 +1,6 @@
 const urlAPI = "http://localhost:3001/facturas";
 const filadummy = document.querySelector(".dummy").cloneNode(true);
-const hoy = luxon.DateTime.fromMillis(1542674993410);
+const hoy = luxon.DateTime.now();
 
 const facturas = fetch(urlAPI).then(respuesta => respuesta.json()).then(dato => dato);
 
@@ -14,6 +14,7 @@ async function nuevaFila() {
       nuevaFila = filadummy.cloneNode(true);
       fechaVencimiento = luxon.DateTime.fromMillis(Number(factura.vencimiento));
       fecha = luxon.DateTime.fromMillis(Number(factura.fecha));
+      console.log(hoy.toLocaleString());
       nuevaFila.querySelector(".numero").textContent = factura.numero;
       nuevaFila.querySelector(".fecha").textContent = fecha.toLocaleString();
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
@@ -30,11 +31,20 @@ async function nuevaFila() {
       document.querySelector(".sumaTotalBase").textContent = totalSumaBase.sumaBase;
       document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA.sumaIVA;
       document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal.sumaTotal;
-      if (factura.abonada === false) {
+      if (factura.abonada === true) {
+        nuevaFila.querySelector(".vence").textContent = "-";
+      } else {
         nuevaFila.querySelector(".estado").classList.add("noAbonada");
         nuevaFila.querySelector(".vence").textContent = fechaVencimiento.toLocaleString();
-      } else {
-        nuevaFila.querySelector(".vence").textContent = "-";
+
+        if (hoy > fechaVencimiento) {
+          const cuantosDiasHace = luxon.DateTime.fromMillis(hoy - fechaVencimiento);
+          nuevaFila.querySelector(".vence").classList.add("vencida");
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Hace ${cuantosDiasHace.day} días)`;
+        } else if (hoy <= fechaVencimiento) {
+          const cuantosDiasFaltan = luxon.DateTime.fromMillis(fechaVencimiento - hoy);
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Faltan ${cuantosDiasFaltan.day} días)`;
+        }
       }
       nuevaFila.classList.remove("dummy");
       tabla.append(nuevaFila);
