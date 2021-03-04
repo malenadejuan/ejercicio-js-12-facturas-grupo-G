@@ -23,6 +23,13 @@ async function nuevaFila() {
       const totalConIVA = `${Math.round(factura.base + ((factura.base * factura.tipoIva) / 100))} €`;
       nuevaFila.querySelector(".total").textContent = totalConIVA;
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
+
+      const totalSumaBase = sumaBase => sumaBase.reduce((acum, elemento) => acum + elemento.factura.base, 0);
+      const totalSumaIVA = sumaIVA => sumaIVA.reduce((acum, elemento) => acum + elemento.precioConIVA, 0);
+      const totalSumaTotal = sumaTotal => sumaTotal.reduce((acum, elemento) => acum + elemento.totalConIVA, 0);
+      document.querySelector(".sumaTotalBase").textContent = totalSumaBase.sumaBase;
+      document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA.sumaIVA;
+      document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal.sumaTotal;
       if (factura.abonada === false) {
         nuevaFila.querySelector(".estado").classList.add("noAbonada");
         nuevaFila.querySelector(".vence").textContent = fechaVencimiento.toLocaleString();
@@ -34,6 +41,7 @@ async function nuevaFila() {
     }
   }
 }
+
 (async () => {
   await nuevaFila();
 }
