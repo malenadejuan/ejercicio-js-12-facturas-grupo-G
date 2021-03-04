@@ -16,6 +16,9 @@ async function nuevaFila() {
       nuevaFila.querySelector(".iva").textContent = factura.tipoIva;
       /* nuevaFila.querySelector(".total").textContent = ; */
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
+      if (factura.abonada === false) {
+        nuevaFila.querySelector(".estado").classList.add("noAbonada");
+      }
       nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
       nuevaFila.classList.remove("dummy");
       tabla.append(nuevaFila);
