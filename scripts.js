@@ -13,8 +13,10 @@ async function nuevaFila() {
       nuevaFila.querySelector(".fecha").textContent = factura.fecha;
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
       nuevaFila.querySelector(".base").textContent = factura.base;
-      nuevaFila.querySelector(".iva").textContent = factura.tipoIva;
-      /* nuevaFila.querySelector(".total").textContent = ; */
+      const precioConIVA = `${Math.round((factura.tipoIva * factura.base) / 100)} € (21%)`;
+      nuevaFila.querySelector(".iva").textContent = precioConIVA;
+      const totalConIVA = `${Math.round(factura.base + ((factura.base * factura.tipoIva) / 100))} €`;
+      nuevaFila.querySelector(".total").textContent = totalConIVA;
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
       nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
       nuevaFila.classList.remove("dummy");
