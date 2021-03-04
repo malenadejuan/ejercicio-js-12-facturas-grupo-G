@@ -1,14 +1,17 @@
 const urlAPI = "http://localhost:3001/facturas";
 const filadummy = document.querySelector(".dummy").cloneNode(true);
+const hoy = luxon.DateTime.fromMillis(1542674993410);
 
 const facturas = fetch(urlAPI).then(respuesta => respuesta.json()).then(dato => dato);
 
 async function nuevaFila() {
   let nuevaFila;
+  let fecha;
   const tabla = document.querySelector(".facturas");
   for (const factura of await facturas) {
     if (factura.tipo === "ingreso") {
       nuevaFila = filadummy.cloneNode(true);
+      fecha = luxon.DateTime.fromMillis(Number(factura.vencimiento));
       nuevaFila.querySelector(".numero").textContent = factura.numero;
       nuevaFila.querySelector(".fecha").textContent = factura.fecha;
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
@@ -20,7 +23,7 @@ async function nuevaFila() {
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
       if (factura.abonada === false) {
         nuevaFila.querySelector(".estado").classList.add("noAbonada");
-        nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
+        nuevaFila.querySelector(".vence").textContent = fecha.toLocaleString();
       } else {
         nuevaFila.querySelector(".vence").textContent = "-";
       }
