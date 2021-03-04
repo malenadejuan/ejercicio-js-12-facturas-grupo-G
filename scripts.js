@@ -18,7 +18,12 @@ async function nuevaFila() {
       const totalConIVA = `${Math.round(factura.base + ((factura.base * factura.tipoIva) / 100))} €`;
       nuevaFila.querySelector(".total").textContent = totalConIVA;
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
-      nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
+      if (factura.abonada === false) {
+        nuevaFila.querySelector(".estado").classList.add("noAbonada");
+        nuevaFila.querySelector(".vence").textContent = factura.vencimiento;
+      } else {
+        nuevaFila.querySelector(".vence").textContent = "-";
+      }
       nuevaFila.classList.remove("dummy");
       tabla.append(nuevaFila);
     }
