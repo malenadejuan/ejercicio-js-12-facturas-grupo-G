@@ -22,18 +22,18 @@ async function nuevaFila() {
       nuevaFila.querySelector(".fecha").textContent = fecha.toFormat("dd/LL/yyyy");
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
 
-      nuevaFila.querySelector(".base").textContent = factura.base + "€";
+      nuevaFila.querySelector(".base").textContent = `${factura.base}€`;
       const precioConIVA = Math.round((factura.tipoIva * factura.base) / 100);
-      nuevaFila.querySelector(".iva").textContent = precioConIVA + "€ (21 %)";
+      nuevaFila.querySelector(".iva").textContent = `${precioConIVA}€ (21 %)`;
       const totalConIVA = Math.round(factura.base + ((factura.base * factura.tipoIva) / 100));
-      nuevaFila.querySelector(".total").textContent = totalConIVA + "€";
-      nuevaFila.querySelector(".estado").textContent = factura.abonada;
+      nuevaFila.querySelector(".total").textContent = `${totalConIVA}€`;
+      nuevaFila.querySelector(".estado").textContent = factura.abonada ? "Abonada" : "Pendiente";
       totalSumaBase += Number(factura.base);
       totalSumaIVA += precioConIVA;
       totalSumaTotal += totalConIVA;
-      document.querySelector(".sumaTotalBase").textContent = totalSumaBase + "€";
-      document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA + "€";
-      document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal + "€";
+      document.querySelector(".sumaTotalBase").textContent = `${totalSumaBase}€`;
+      document.querySelector(".sumaTotalIVA").textContent = `${totalSumaIVA}€`;
+      document.querySelector(".sumaTotalTotal").textContent = `${totalSumaTotal}€`;
 
       if (factura.abonada === true) {
         nuevaFila.querySelector(".estado").classList.add("table-success");
