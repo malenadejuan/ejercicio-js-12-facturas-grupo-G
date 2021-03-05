@@ -38,12 +38,12 @@ async function nuevaFila() {
         nuevaFila.querySelector(".vence").textContent = fechaVencimiento.toLocaleString();
 
         if (hoy > fechaVencimiento) {
-          const cuantosDiasHace = luxon.DateTime.fromMillis(hoy - fechaVencimiento);
+          const cuantosDiasHace = hoy.diff(fechaVencimiento, "days");
           nuevaFila.querySelector(".vence").classList.add("vencida");
-          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Hace ${cuantosDiasHace.day} días)`;
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Hace ${Math.round(cuantosDiasHace.days)} días)`;
         } else if (hoy <= fechaVencimiento) {
-          const cuantosDiasFaltan = luxon.DateTime.fromMillis(fechaVencimiento - hoy);
-          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Faltan ${cuantosDiasFaltan.day} días)`;
+          const cuantosDiasFaltan = fechaVencimiento.diff(hoy, "days");
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Faltan ${Math.round(cuantosDiasFaltan.days)} días)`;
         }
       }
       nuevaFila.classList.remove("dummy");
