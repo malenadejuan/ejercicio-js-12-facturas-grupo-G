@@ -23,7 +23,7 @@ async function nuevaFila() {
       nuevaFila.querySelector(".iva").textContent = precioConIVA;
       const totalConIVA = `${Math.round(factura.base + ((factura.base * factura.tipoIva) / 100))} €`;
       nuevaFila.querySelector(".total").textContent = totalConIVA;
-      nuevaFila.querySelector(".estado").textContent = factura.abonada;
+      nuevaFila.querySelector(".estado").textContent = factura.abonada ? "Abonada" : "Pendiente";
 
       const totalSumaBase = sumaBase => sumaBase.reduce((acum, elemento) => acum + elemento.factura.base, 0);
       const totalSumaIVA = sumaIVA => sumaIVA.reduce((acum, elemento) => acum + elemento.precioConIVA, 0);
