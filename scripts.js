@@ -19,9 +19,8 @@ async function nuevaFila() {
       fecha = luxon.DateTime.fromMillis(Number(factura.fecha));
       console.log(hoy.toLocaleString());
       nuevaFila.querySelector(".numero").textContent = factura.numero;
-      nuevaFila.querySelector(".fecha").textContent = fecha.toFormat("dd/LL/yyyy");
+      nuevaFila.querySelector(".fecha").textContent = fecha.toLocaleString();
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
-
       nuevaFila.querySelector(".base").textContent = `${factura.base}€`;
       const precioConIVA = Math.round((factura.tipoIva * factura.base) / 100);
       nuevaFila.querySelector(".iva").textContent = `${precioConIVA}€ (21 %)`;
@@ -34,22 +33,19 @@ async function nuevaFila() {
       document.querySelector(".sumaTotalBase").textContent = `${totalSumaBase}€`;
       document.querySelector(".sumaTotalIVA").textContent = `${totalSumaIVA}€`;
       document.querySelector(".sumaTotalTotal").textContent = `${totalSumaTotal}€`;
-
       if (factura.abonada === true) {
-        nuevaFila.querySelector(".estado").classList.add("table-success");
-        nuevaFila.querySelector(".vence").classList.add("table-success");
         nuevaFila.querySelector(".vence").textContent = "-";
       } else {
-        nuevaFila.querySelector(".estado").classList.add("table-danger");
+        nuevaFila.querySelector(".estado").classList.add("noAbonada");
         nuevaFila.querySelector(".vence").textContent = fechaVencimiento.toLocaleString();
+
         if (hoy > fechaVencimiento) {
-          const cuantosDiasHace = hoy.diff(fechaVencimiento, "days");
-          nuevaFila.querySelector(".vence").classList.add("table-danger");
-          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toFormat("dd/LL/yyyy")} (Hace ${Math.round(cuantosDiasHace.days)} días)`;
+          const cuantosDiasHace = luxon.DateTime.fromMillis(hoy - fechaVencimiento);
+          nuevaFila.querySelector(".vence").classList.add("vencida");
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Hace ${cuantosDiasHace.day} días)`;
         } else if (hoy <= fechaVencimiento) {
-          const cuantosDiasFaltan = fechaVencimiento.diff(hoy, "days");
-          nuevaFila.querySelector(".vence").classList.add("table-success");
-          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toFormat("dd/LL/yyyy")} (Faltan ${Math.round(cuantosDiasFaltan.days)} días)`;
+          const cuantosDiasFaltan = luxon.DateTime.fromMillis(fechaVencimiento - hoy);
+          nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Faltan ${cuantosDiasFaltan.day} días)`;
         }
       }
       nuevaFila.classList.remove("dummy");
