@@ -32,17 +32,19 @@ async function nuevaFila() {
       document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA.sumaIVA;
       document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal.sumaTotal;
       if (factura.abonada === true) {
+        nuevaFila.querySelector(".estado").classList.add("table-success");
+        nuevaFila.querySelector(".vence").classList.add("table-success");
         nuevaFila.querySelector(".vence").textContent = "-";
       } else {
-        nuevaFila.querySelector(".estado").classList.add("noAbonada");
+        nuevaFila.querySelector(".estado").classList.add("table-danger");
         nuevaFila.querySelector(".vence").textContent = fechaVencimiento.toLocaleString();
-
         if (hoy > fechaVencimiento) {
           const cuantosDiasHace = hoy.diff(fechaVencimiento, "days");
-          nuevaFila.querySelector(".vence").classList.add("vencida");
+          nuevaFila.querySelector(".vence").classList.add("table-danger");
           nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Hace ${Math.round(cuantosDiasHace.days)} días)`;
         } else if (hoy <= fechaVencimiento) {
           const cuantosDiasFaltan = fechaVencimiento.diff(hoy, "days");
+          nuevaFila.querySelector(".vence").classList.add("table-success");
           nuevaFila.querySelector(".vence").textContent = `${fechaVencimiento.toLocaleString()} (Faltan ${Math.round(cuantosDiasFaltan.days)} días)`;
         }
       }
