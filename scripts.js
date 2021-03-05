@@ -8,6 +8,9 @@ async function nuevaFila() {
   let nuevaFila;
   let fechaVencimiento;
   let fecha;
+  let totalSumaBase = 0;
+  let totalSumaIVA = 0;
+  let totalSumaTotal = 0;
   const tabla = document.querySelector(".facturas");
   for (const factura of await facturas) {
     if (factura.tipo === "ingreso") {
@@ -18,19 +21,18 @@ async function nuevaFila() {
       nuevaFila.querySelector(".numero").textContent = factura.numero;
       nuevaFila.querySelector(".fecha").textContent = fecha.toLocaleString();
       nuevaFila.querySelector(".concepto").textContent = factura.concepto;
-      nuevaFila.querySelector(".base").textContent = factura.base;
-      const precioConIVA = `${Math.round((factura.tipoIva * factura.base) / 100)} € (21%)`;
-      nuevaFila.querySelector(".iva").textContent = precioConIVA;
-      const totalConIVA = `${Math.round(factura.base + ((factura.base * factura.tipoIva) / 100))} €`;
-      nuevaFila.querySelector(".total").textContent = totalConIVA;
+      nuevaFila.querySelector(".base").textContent = factura.base + "€";
+      const precioConIVA = Math.round((factura.tipoIva * factura.base) / 100);
+      nuevaFila.querySelector(".iva").textContent = precioConIVA + "€ (21 %)";
+      const totalConIVA = Math.round(factura.base + ((factura.base * factura.tipoIva) / 100));
+      nuevaFila.querySelector(".total").textContent = totalConIVA + "€";
       nuevaFila.querySelector(".estado").textContent = factura.abonada;
-
-      const totalSumaBase = sumaBase => sumaBase.reduce((acum, elemento) => acum + elemento.factura.base, 0);
-      const totalSumaIVA = sumaIVA => sumaIVA.reduce((acum, elemento) => acum + elemento.precioConIVA, 0);
-      const totalSumaTotal = sumaTotal => sumaTotal.reduce((acum, elemento) => acum + elemento.totalConIVA, 0);
-      document.querySelector(".sumaTotalBase").textContent = totalSumaBase.sumaBase;
-      document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA.sumaIVA;
-      document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal.sumaTotal;
+      totalSumaBase += Number(factura.base);
+      totalSumaIVA += precioConIVA;
+      totalSumaTotal += totalConIVA;
+      document.querySelector(".sumaTotalBase").textContent = totalSumaBase + "€";
+      document.querySelector(".sumaTotalIVA").textContent = totalSumaIVA + "€";
+      document.querySelector(".sumaTotalTotal").textContent = totalSumaTotal + "€";
       if (factura.abonada === true) {
         nuevaFila.querySelector(".vence").textContent = "-";
       } else {
